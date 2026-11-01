@@ -1,53 +1,51 @@
 # MultiUseTimer
 
-MultiUseTimer is een lokale webapplicatie om **countdown- en count-up-timers** te beheren voor
-belangrijke momenten: het aftellen naar een vakantie, verjaardag of feestdag, of het bijhouden
-hoe lang geleden iets heeft plaatsgevonden. Elke timer kan worden voorzien van een eigen foto,
-accentkleur, subtitel en eigen tijdseenheden, en het dashboard kan met drag-and-drop worden
-geordend.
+MultiUseTimer is a local web application for managing **countdown and count-up timers** for
+important moments: counting down to a holiday, birthday or party, or tracking how long ago
+something happened. Every timer can have its own photo, accent color, subtitle and time units,
+and the dashboard can be ordered with drag-and-drop.
 
-De applicatie is **volledig client-side**: er is geen backend, geen account en er worden geen
-gegevens naar externe servers verstuurd. Alle timers worden lokaal in de browser opgeslagen
-(IndexedDB, met localStorage als fallback).
+The application is **fully client-side**: there is no backend, no account, and no data is sent
+to external servers. All timers are stored locally in the browser (IndexedDB, with a
+localStorage fallback).
 
-## Belangrijkste functionaliteit
+## Key features
 
-- **Countdown** naar een toekomstig moment en **count-up** vanaf een moment in het verleden.
-- Één centrale klok die alle kaarten tegelijk bijwerkt (geen interval per kaart).
-- Kalendergebaseerde berekening van maanden, weken en dagen, inclusief schrikkeljaren en
-  zomer-/wintertijdovergangen (zie `PLAN.md` voor de exacte semantiek).
-- Tijdzonebewuste opslag: de gekozen datum/tijd wordt opgeslagen als ISO 8601 met expliciete
-  offset, zodat het moment ondubbelzinnig is, ook als het apparaat later in een andere
-  tijdzone staat.
-- Instelbare tijdseenheden (maanden t/m minuten) en een schakelaar voor seconden.
-- Eigen foto (upload, lokaal opgeslagen als data-URL) of externe afbeeldings-URL.
-- Accentkleur per kaart.
-- Drag-and-drop ordening plus een toegankelijk alternatief (omhoog/omlaag in het kaartmenu).
-- JSON-export en gecontroleerde JSON-import (vervangen of toevoegen) als backup.
-- Subtiele confetti wanneer een countdown nul bereikt (respecteert `prefers-reduced-motion`).
-- PWA-basis: manifest, installeerbaar, service worker met cache-first assets en
-  network-first navigatie, zodat de applicatie na het laden offline blijft werken.
+- **Countdown** to a future moment and **count-up** from a moment in the past.
+- A single central clock updates all cards at once (no interval per card).
+- Calendar-based calculation of months, weeks and days, including leap years and
+  daylight-saving-time transitions (see `PLAN.md` for the exact semantics — written in Dutch).
+- Timezone-aware storage: the chosen date/time is stored as ISO 8601 with an explicit UTC
+  offset, so the moment is unambiguous even if the device later moves to a different timezone.
+- Selectable time units (months down to minutes) and a seconds toggle.
+- Custom photo (upload, stored locally as a data URL) or an external image URL.
+- Per-card accent color.
+- Drag-and-drop ordering plus an accessible alternative (move up/down in the card menu).
+- JSON export and validated JSON import (replace or merge) as a backup.
+- Subtle confetti when a countdown reaches zero (respects `prefers-reduced-motion`).
+- PWA basics: manifest, installable, service worker with cache-first assets and network-first
+  navigation, so the application keeps working offline once loaded.
 
-## Gebruikte technologieën
+## Tech stack
 
-| Onderdeel | Keuze |
+| Part | Choice |
 | --- | --- |
-| Framework | [SvelteKit 2](https://svelte.dev/docs/kit) met [Svelte 5](https://svelte.dev/docs/svelte) (runes) |
-| Buildtool | Vite 7 |
-| Taal | TypeScript (strict) |
-| Opslag | [localForage](https://github.com/localForage/localForage) (IndexedDB, fallback localStorage) |
+| Framework | [SvelteKit 2](https://svelte.dev/docs/kit) with [Svelte 5](https://svelte.dev/docs/svelte) (runes) |
+| Build tool | Vite 7 |
+| Language | TypeScript (strict) |
+| Storage | [localForage](https://github.com/localForage/localForage) (IndexedDB, localStorage fallback) |
 | Drag-and-drop | [svelte-dnd-action](https://github.com/isaacHagoel/svelte-dnd-action) |
-| Datums | [date-fns](https://date-fns.org/) |
-| Fonts | Inter (via `@fontsource-variable/inter`, lokaal gebundeld) |
-| Tests | [Vitest](https://vitest.dev/) met [fake-indexeddb](https://github.com/indexeddbshim/IndexedDB-shim) voor opslagintegratietests |
-| Hosting | Statische site via `@sveltejs/adapter-static` |
+| Dates | [date-fns](https://date-fns.org/) |
+| Fonts | Inter (via `@fontsource-variable/inter`, bundled locally) |
+| Tests | [Vitest](https://vitest.dev/) with [fake-indexeddb](https://github.com/indexeddbshim/IndexedDB-shim) for storage integration tests |
+| Hosting | Static site via `@sveltejs/adapter-static` |
 
-## Vereisten
+## Requirements
 
-- Node.js 20 of nieuwer
+- Node.js 20 or newer
 - npm
 
-## Installatie
+## Installation
 
 ```bash
 npm install
@@ -59,35 +57,35 @@ npm install
 npm run dev -- --open
 ```
 
-De developmentserver staat standaard op <http://localhost:5173>.
+The development server runs at <http://localhost:5173> by default.
 
-## Productiebuild
+## Production build
 
 ```bash
 npm run build
 npm run preview
 ```
 
-`npm run build` schrijft de volledige statische site naar `build/`. Die map kan op elke
-statische host worden neergezet (GitHub Pages, Netlify, een webserver, …). `npm run preview`
-serveert de build lokaal om te controleren.
+`npm run build` writes the complete static site to `build/`. That folder can be deployed to any
+static host (GitHub Pages, Netlify, a plain web server, …). `npm run preview` serves the build
+locally so you can check it.
 
 ## Tests
 
 ```bash
-npm test            # éénmalig draaien (unit + integratie)
-npm run test:watch  # in watch-modus
+npm test            # run once (unit + integration)
+npm run test:watch  # watch mode
 npm run check       # svelte-check + TypeScript
 ```
 
-De unit- en integratietests staan in `tests/` en draaien deterministisch in de tijdzone
-Europe/Amsterdam (inclusief de zomer-/wintertijdovergangen van 2026), zodat de
-kalenderberekeningen reproduceerbaar zijn.
+The unit and integration tests live in `tests/` and run deterministically in the
+Europe/Amsterdam timezone (including the 2026 daylight-saving transitions), so the calendar
+calculations are reproducible.
 
-Daarnaast staat er een optionele end-to-end rooktest in `tests/e2e/smoke.mjs` die de volledige
-gebruikersflow in een echte browser doorloopt (aanmaken, tellen, bewerken, ordenen, herladen,
-exporteren, importeren, verwijderen). Deze vereist een aparte installatie van
-[Playwright](https://playwright.dev/) en een draaiende preview-server:
+There is also an optional end-to-end smoke test in `tests/e2e/smoke.mjs` that walks the entire
+user flow in a real browser (create, ticking, edit, ordering, reload, export, import, delete).
+It requires a separate installation of [Playwright](https://playwright.dev/) and a running
+preview server:
 
 ```bash
 npm run build
@@ -96,49 +94,52 @@ npm i --no-save playwright && npx playwright install chromium
 node tests/e2e/smoke.mjs
 ```
 
-## Opslag en privacy
+## Storage and privacy
 
-- Timers worden opgeslagen in **IndexedDB** (database `multiusetimer`, store `events`) via
-  localForage. Wanneer IndexedDB niet beschikbaar is, valt localForage terug op localStorage.
-- Geüploade foto's worden als **data-URL** in dezelfde lokale opslag bewaard; er wordt niets
-  geüpload naar een server.
-- Externe afbeeldings-URL's worden door de browser zelf geladen; die afbeeldingen kunnen
-  offline of na verwijdering verdwijnen, de rest van de timer blijft gewoon werken.
-- Alle gegevens die uit de opslag of uit een importbestand komen worden gevalideerd;
-  beschadigde records worden overgeslagen in plaats van de applicatie te laten crashen.
+- Timers are stored in **IndexedDB** (database `multiusetimer`, store `events`) via localForage.
+  When IndexedDB is unavailable, localForage falls back to localStorage.
+- Uploaded photos are kept as a **data URL** in the same local storage; nothing is uploaded to
+  a server.
+- External image URLs are loaded by the browser itself; those images may disappear offline or
+  after removal, the rest of the timer keeps working.
+- All data coming out of storage or an import file is validated; corrupt records are skipped
+  instead of crashing the application.
 
-Beperkingen van lokale browseropslag:
+Limitations of local browser storage:
 
-- De opslag is per browser en per apparaat. Gegevens verdwijnen wanneer de sitegegevens van
-  de browser worden gewist (of bij privévensters zonder opslag).
-- De browser stelt een quota in (meestal enkele honderden MB's). Bij het bereiken daarvan
-  geeft de applicatie een duidelijke foutmelding; maak regelmatig een JSON-backup.
-- Een JSON-backup bevat ook de foto's (data-URL's) en kan daardoor groot zijn.
+- Storage is per browser and per device. Data disappears when the browser's site data is
+  cleared (or in private windows without storage).
+- The browser enforces a quota (usually several hundred megabytes). When it is reached, the
+  application shows a clear error message; make regular JSON backups.
+- A JSON backup includes the photos (data URLs) and can therefore be large.
 
-## JSON-backups
+## JSON backups
 
-**Exporteren** (knop "Exporteren") downloadt één JSON-bestand (`multiusetimer-backup-JJJJ-MM-DD.json`):
+**Exporting** (the "Exporteren" button) downloads a single JSON file
+(`multiusetimer-backup-YYYY-MM-DD.json`):
 
 ```json
 {
 	"app": "MultiUseTimer",
 	"version": 1,
 	"exportedAt": "2026-11-01T19:00:00.000Z",
-	"events": [ "… alle timers, inclusief lokale afbeeldingsdata-URL's …" ]
+	"events": [ "… all timers, including local image data URLs …" ]
 }
 ```
 
-**Importeren** (knop "Importeren") valideert het bestand eerst en toont een samenvatting.
-Daarna kies je zelf:
+**Importing** (the "Importeren" button) validates the file first and shows a summary. You then
+choose:
 
-- **Toevoegen** — bestaande timers blijven staan; timers die al bestaan (zelfde id) worden
-  overgeslagen, ongeldige regels worden overgeslagen en gemeld.
-- **Vervangen** — de huidige lijst wordt volledig vervangen door het bestand.
+- **Merge** — existing timers stay in place; timers that already exist (same id) are skipped,
+  invalid entries are skipped and reported.
+- **Replace** — the current list is fully replaced by the file.
 
-Bij een ongeldig of te nieuw bestandsformaat wordt de import geweigerd en blijven de
-bestaande gegevens onaangetast.
+If the file is invalid or created with a newer export format, the import is rejected and the
+existing data is left untouched.
 
-## Applicatie lokaal opnieuw opzetten
+> Note: the application's UI is in Dutch ("Exporteren" = Export, "Importeren" = Import).
+
+## Setting the application up locally again
 
 ```bash
 git clone https://github.com/Cyxno/multiusetimer.git
@@ -147,11 +148,12 @@ npm install
 npm run dev -- --open
 ```
 
-Omdat alle gegevens in de browser van de gebruiker staan, is er geen migratie of
-serverconfiguratie nodig: een verse installatie start met een leeg dashboard en de bestaande
-timers van die browser komen terug zodra dezelfde site op hetzelfde origin wordt geopend.
+Because all data lives in the user's browser, there is no migration or server configuration
+needed: a fresh install starts with an empty dashboard, and the existing timers of that browser
+reappear as soon as the same site is opened on the same origin.
 
-## Projectstructuur
+## Project structure
 
-Zie [`PLAN.md`](./PLAN.md) voor de architectuur, de ontwerpkeuzes (o.a. de semantiek van
-maanden/weken en tijdzoneverwerking) en de implementatiestatus.
+See [`PLAN.md`](./PLAN.md) for the architecture, the design decisions (among others the
+semantics of months/weeks and timezone handling — written in Dutch) and the implementation
+status.
