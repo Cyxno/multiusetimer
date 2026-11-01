@@ -9,6 +9,8 @@ The application is **fully client-side**: there is no backend, no account, and n
 to external servers. All timers are stored locally in the browser (IndexedDB, with a
 localStorage fallback).
 
+**Live:** <https://cyxno.eu/multiusetimer/>
+
 ## Key features
 
 - **Countdown** to a future moment and **count-up** from a moment in the past.

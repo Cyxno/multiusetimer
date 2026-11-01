@@ -5,15 +5,24 @@
  * - Navigaties (de pagina zelf): netwerk eerst, met cache als fallback. Een
  *   update van de applicatie wordt daardoor nooit geblokkeerd door oude
  *   gecachete assets; offline start de laatst opgeslagen pagina gewoon.
- * - /_app/immutable/ (gehashte build-assets: JS, CSS, fonts): cache eerst —
+ * - _app/immutable/ (gehashte build-assets: JS, CSS, fonts): cache eerst —
  *   de bestandsnaam verandert bij elke release, dus cache kan nooit verouderen.
  * - Overige verzoeken (bijv. externe afbeeldingen) worden niet gecachet;
  *   externe afbeeldingen zijn optioneel en mogen offline verdwijnen.
+ *
+ * Alle paden zijn relatief ten opzichte van de service worker-scope, zodat de
+ * applicatie zowel op een domeinroot als onder een subpad werkt (bijv.
+ * https://cyxno.eu/multiusetimer/).
  */
 
+const IMMUTABLE_PREFIX = '_app/immutable/';
+
+// Basis van de scope, met trailing slash (bijv. "/" of "/multiusetimer/").
+const BASE = new URL('.', self.registration.scope);
+
 const CACHE_NAME = 'multiusetimer-v1';
-const PRECACHE = ['/', '/manifest.webmanifest'];
-const IMMUTABLE_PREFIX = '/_app/immutable/';
+const PRECACHE = [BASE, new URL('manifest.webmanifest', BASE)];
+const IMMUTABLE_PATH = new URL(IMMUTABLE_PREFIX, BASE).pathname;
 
 self.addEventListener('install', (event) => {
 	event.waitUntil(
@@ -47,10 +56,10 @@ self.addEventListener('fetch', (event) => {
 				try {
 					const response = await fetch(request);
 					const cache = await caches.open(CACHE_NAME);
-					cache.put('/', response.clone());
+					cache.put(BASE, response.clone());
 					return response;
 				} catch {
-					const cached = await caches.match('/');
+					const cached = await caches.match(BASE);
 					return cached || Response.error();
 				}
 			})()
@@ -58,7 +67,7 @@ self.addEventListener('fetch', (event) => {
 		return;
 	}
 
-	if (url.pathname.startsWith(IMMUTABLE_PREFIX)) {
+	if (url.pathname.startsWith(IMMUTABLE_PATH)) {
 		event.respondWith(
 			(async () => {
 				const cached = await caches.match(request);

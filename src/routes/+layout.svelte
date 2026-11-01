@@ -11,9 +11,11 @@
 	$effect(() => {
 		clock.start();
 
-		// Service worker alleen in productie registreren (PWA-basis).
+		// Service worker alleen in productie registreren (PWA-basis). Relatieve
+		// registratie zodat de app ook onder een subpad (bijv. cyxno.eu/multiusetimer/)
+		// een correcte scope krijgt.
 		if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-			navigator.serviceWorker.register('/sw.js').catch(() => {
+			navigator.serviceWorker.register('sw.js').catch(() => {
 				/* Offline-ondersteuning is optioneel; de app werkt ook zonder. */
 			});
 		}
@@ -25,7 +27,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<meta name="theme-color" content="#0a0d14" />
-	<link rel="manifest" href="/manifest.webmanifest" />
+	<link rel="manifest" href="./manifest.webmanifest" />
 	<meta
 		name="description"
 		content="MultiUseTimer — lokale countdown- en count-up-timers voor belangrijke momenten."
