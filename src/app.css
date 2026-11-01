@@ -1,0 +1,360 @@
+/*
+ * MultiUseTimer — design tokens en globale basisstijlen.
+ * Donker thema, rustige achtergrond, accentkleur via CSS-variabelen.
+ */
+
+:root {
+	color-scheme: dark;
+
+	/* Kleuren */
+	--bg: #0a0d14;
+	--bg-soft: #0e121b;
+	--surface: #131826;
+	--surface-2: #1a2032;
+	--surface-3: #212a41;
+	--border: #262f47;
+	--border-strong: #36405e;
+	--text: #eef1f8;
+	--text-muted: #97a0b8;
+	--text-faint: #6b7490;
+	--accent: #6c8cff;
+	--accent-soft: rgba(108, 140, 255, 0.14);
+	--success: #34d399;
+	--warning: #fbbf24;
+	--danger: #f87171;
+	--danger-soft: rgba(248, 113, 113, 0.12);
+
+	/* Vormgeving */
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 18px;
+	--radius-xl: 24px;
+
+	--shadow-card: 0 10px 30px -12px rgba(2, 4, 12, 0.7), 0 2px 8px -4px rgba(2, 4, 12, 0.5);
+	--shadow-card-hover: 0 18px 44px -14px rgba(2, 4, 12, 0.8), 0 4px 12px -4px rgba(2, 4, 12, 0.55);
+	--shadow-modal: 0 30px 80px -20px rgba(0, 0, 0, 0.75);
+
+	--font-sans:
+		'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+	/* Spacing */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.5rem;
+	--space-6: 2rem;
+	--space-7: 3rem;
+
+	--container: 1200px;
+	--header-height: 4.25rem;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	font-family: var(--font-sans);
+	background:
+		radial-gradient(1100px 520px at 85% -10%, rgba(108, 140, 255, 0.14), transparent 60%),
+		radial-gradient(900px 480px at -10% 20%, rgba(34, 211, 238, 0.08), transparent 55%),
+		var(--bg);
+	background-attachment: fixed;
+	color: var(--text);
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p {
+	margin: 0;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+/* Toegankelijke focusstijl */
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Visueel verborgen, maar beschikbaar voor schermlezers */
+.visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Getallen mogen niet verspringen in breedte */
+.tabular {
+	font-variant-numeric: tabular-nums lining-nums;
+	font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+/* ——— Herbruikbare knopstijlen ——— */
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	padding: 0.6rem 1.1rem;
+	border-radius: var(--radius-md);
+	border: 1px solid var(--border-strong);
+	background: var(--surface-2);
+	color: var(--text);
+	font-weight: 600;
+	font-size: 0.95rem;
+	line-height: 1.2;
+	cursor: pointer;
+	transition:
+		background 0.15s ease,
+		border-color 0.15s ease,
+		transform 0.1s ease,
+		box-shadow 0.15s ease;
+	touch-action: manipulation;
+	user-select: none;
+}
+
+.btn:hover {
+	background: var(--surface-3);
+	border-color: var(--border-strong);
+}
+
+.btn:active {
+	transform: translateY(1px);
+}
+
+.btn:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.btn--primary {
+	background: linear-gradient(135deg, var(--accent), #5871e8);
+	border-color: transparent;
+	color: #0b0e17;
+}
+
+.btn--primary:hover {
+	background: linear-gradient(135deg, #7d9aff, #6a83f2);
+	box-shadow: 0 6px 20px -6px rgba(108, 140, 255, 0.5);
+}
+
+.btn--danger {
+	background: transparent;
+	border-color: rgba(248, 113, 113, 0.4);
+	color: var(--danger);
+}
+
+.btn--danger:hover {
+	background: var(--danger-soft);
+	border-color: rgba(248, 113, 113, 0.65);
+}
+
+.btn--ghost {
+	background: transparent;
+	border-color: transparent;
+	color: var(--text-muted);
+}
+
+.btn--ghost:hover {
+	background: var(--surface-2);
+	color: var(--text);
+}
+
+.btn--small {
+	padding: 0.4rem 0.75rem;
+	font-size: 0.875rem;
+	border-radius: var(--radius-sm);
+}
+
+/* ——— Formuliervelden ——— */
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.field__label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--text-muted);
+}
+
+.field__label .field__required {
+	color: var(--accent);
+}
+
+.input,
+.select {
+	width: 100%;
+	padding: 0.6rem 0.75rem;
+	border-radius: var(--radius-md);
+	border: 1px solid var(--border-strong);
+	background: var(--bg-soft);
+	color: var(--text);
+	font: inherit;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input::placeholder {
+	color: var(--text-faint);
+}
+
+.input:hover,
+.select:hover {
+	border-color: #46527a;
+}
+
+.input:focus,
+.select:focus {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.input[aria-invalid='true'] {
+	border-color: var(--danger);
+}
+
+.input--error:focus {
+	box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15);
+}
+
+.field__error {
+	font-size: 0.825rem;
+	color: var(--danger);
+}
+
+.field__hint {
+	font-size: 0.8rem;
+	color: var(--text-faint);
+}
+
+/* ——— Schuifknop ——— */
+
+.switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	cursor: pointer;
+	user-select: none;
+}
+
+.switch input {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+
+.switch__track {
+	position: relative;
+	width: 2.4rem;
+	height: 1.35rem;
+	border-radius: 999px;
+	background: var(--surface-3);
+	border: 1px solid var(--border-strong);
+	transition: background 0.18s ease, border-color 0.18s ease;
+	flex-shrink: 0;
+}
+
+.switch__track::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 0.18rem;
+	transform: translateY(-50%);
+	width: 0.95rem;
+	height: 0.95rem;
+	border-radius: 50%;
+	background: var(--text-muted);
+	transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.switch input:checked + .switch__track {
+	background: var(--accent);
+	border-color: transparent;
+}
+
+.switch input:checked + .switch__track::after {
+	transform: translate(1.02rem, -50%);
+	background: #0b0e17;
+}
+
+.switch input:focus-visible + .switch__track {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.switch__text {
+	font-size: 0.925rem;
+}
+
+/* ——— Animaties ——— */
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes pop-in {
+	from {
+		opacity: 0;
+		transform: translateY(14px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
