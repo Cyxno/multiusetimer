@@ -25,13 +25,13 @@
 	if (browser) {
 		setAriaStrings({
 			dragStarted: ({ itemLabel, position, count }) =>
-				`${itemLabel} opgepakt. Positie ${position} van ${count}. Gebruik de pijltjestoetsen om te verplaatsen, spatie om los te laten, escape om af te breken.`,
+				`${itemLabel} picked up. Position ${position} of ${count}. Use the arrow keys to move, space to drop, escape to cancel.`,
 			movedToPosition: ({ itemLabel, position, count }) =>
-				`${itemLabel} verplaatst naar positie ${position} van ${count}.`,
+				`${itemLabel} moved to position ${position} of ${count}.`,
 			dropped: ({ itemLabel, position, count }) =>
-				`${itemLabel} losgelaten op positie ${position} van ${count}.`,
+				`${itemLabel} dropped at position ${position} of ${count}.`,
 			zoneActiveInstruction:
-				'Sleepgebied. Druk op spatie om een kaart op te pakken en met de pijltjestoetsen te verplaatsen.'
+				'Drop zone. Press space to pick up a card and move it with the arrow keys.'
 		});
 	}
 

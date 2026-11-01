@@ -97,55 +97,55 @@ export function parseEvent(raw: unknown, position?: number): ValidationResult<Ti
 	const where = position !== undefined ? ` (positie ${position + 1})` : '';
 	const fail = (...errors: string[]) => ({ ok: false as const, errors });
 
-	if (!isRecord(raw)) return fail(`Ongeldig event${where}: geen object.`);
+	if (!isRecord(raw)) return fail(`Invalid event${where}: not an object.`);
 
 	const id = asString(raw.id)?.trim();
 	if (!id || id.length > 128) {
-		return fail(`Ongeldig event${where}: id ontbreekt of is te lang.`);
+		return fail(`Invalid event${where}: id is missing or too long.`);
 	}
 
 	const title = asString(raw.title)?.trim();
-	if (!title) return fail(`Ongeldig event${where}: titel ontbreekt.`);
+	if (!title) return fail(`Invalid event${where}: title is missing.`);
 	if (title.length > MAX_TITLE_LENGTH) {
-		return fail(`Ongeldig event${where}: titel is langer dan ${MAX_TITLE_LENGTH} tekens.`);
+		return fail(`Invalid event${where}: title exceeds ${MAX_TITLE_LENGTH} characters.`);
 	}
 
 	const subtitleRaw = asString(raw.subtitle)?.trim();
 	if (subtitleRaw && subtitleRaw.length > MAX_SUBTITLE_LENGTH) {
-		return fail(`Ongeldig event${where}: subtitel is langer dan ${MAX_SUBTITLE_LENGTH} tekens.`);
+		return fail(`Invalid event${where}: subtitle exceeds ${MAX_SUBTITLE_LENGTH} characters.`);
 	}
 
 	const mode = normalizeMode(raw.mode);
-	if (!mode) return fail(`Ongeldig event${where}: onbekende modus.`);
+	if (!mode) return fail(`Invalid event${where}: unknown mode.`);
 
 	if (!isValidIsoWithOffset(raw.targetDate)) {
 		return fail(
-			`Ongeldig event${where}: targetDate moet een ISO-datumtijd met expliciete offset zijn.`
+			`Invalid event${where}: targetDate must be an ISO date-time with an explicit offset.`
 		);
 	}
 
 	const units = normalizeUnits(raw.units ?? DEFAULT_UNITS);
 	if (!units || units.length === 0) {
-		return fail(`Ongeldig event${where}: geen geldige tijdseenheden.`);
+		return fail(`Invalid event${where}: no valid time units.`);
 	}
 
 	if (typeof raw.showSeconds !== 'boolean') {
-		return fail(`Ongeldig event${where}: showSeconds moet true of false zijn.`);
+		return fail(`Invalid event${where}: showSeconds must be true or false.`);
 	}
 
 	const order = raw.order;
 	if (typeof order !== 'number' || !Number.isFinite(order) || order < 0) {
-		return fail(`Ongeldig event${where}: ongeldige volgorde.`);
+		return fail(`Invalid event${where}: invalid order.`);
 	}
 
 	const createdAt = asString(raw.createdAt) && Number.isFinite(Date.parse(raw.createdAt as string))
 		? (raw.createdAt as string)
 		: null;
-	if (!createdAt) return fail(`Ongeldig event${where}: ongeldig aanmaakmoment.`);
+	if (!createdAt) return fail(`Invalid event${where}: invalid creation timestamp.`);
 
 	const image = normalizeImage(raw.image);
 	if (image === undefined && raw.image !== undefined && raw.image !== null && raw.image !== '') {
-		return fail(`Ongeldig event${where}: niet-ondersteunde afbeelding.`);
+		return fail(`Invalid event${where}: unsupported image.`);
 	}
 
 	const accentColor = normalizeAccentColor(raw.accentColor);
@@ -176,35 +176,35 @@ export function validateEventInput(
 	const errors: string[] = [];
 
 	const title = (input.title ?? '').trim();
-	if (!title) errors.push('Vul een titel in.');
+	if (!title) errors.push('Enter a title.');
 	else if (title.length > MAX_TITLE_LENGTH) {
-		errors.push(`De titel mag maximaal ${MAX_TITLE_LENGTH} tekens bevatten.`);
+		errors.push(`The title may contain at most ${MAX_TITLE_LENGTH} characters.`);
 	}
 
 	const subtitle = (input.subtitle ?? '').trim() || undefined;
 	if (subtitle && subtitle.length > MAX_SUBTITLE_LENGTH) {
-		errors.push(`De subtitel mag maximaal ${MAX_SUBTITLE_LENGTH} tekens bevatten.`);
+		errors.push(`The subtitle may contain at most ${MAX_SUBTITLE_LENGTH} characters.`);
 	}
 
 	const mode = normalizeMode(input.mode);
-	if (!mode) errors.push('Kies een geldige modus.');
+	if (!mode) errors.push('Pick a valid mode.');
 
 	if (!isValidIsoWithOffset(input.targetDate)) {
-		errors.push('Vul een geldige datum en tijd in.');
+		errors.push('Enter a valid date and time.');
 	}
 
 	const units = normalizeUnits(input.units ?? []);
 	if (!units || units.length === 0) {
-		errors.push('Kies minimaal één tijdseenheid.');
+		errors.push('Select at least one time unit.');
 	}
 
 	if (typeof input.showSeconds !== 'boolean') {
-		errors.push('Geef aan of seconden getoond moeten worden.');
+		errors.push('Indicate whether seconds should be shown.');
 	}
 
 	const image = normalizeImage(input.image);
 	if (image === undefined && input.image !== undefined && input.image !== null && input.image !== '') {
-		errors.push('De afbeelding heeft een niet-ondersteund formaat.');
+		errors.push('The image format is not supported.');
 	}
 
 	const accentColor = normalizeAccentColor(input.accentColor);
@@ -236,22 +236,22 @@ export function validateImportPayload(
 ): ValidationResult<{ events: TimerEvent[]; invalidCount: number; version: number }> {
 	const fail = (...errors: string[]) => ({ ok: false as const, errors });
 
-	if (!isRecord(raw)) return fail('Ongeldig bestand: de inhoud is geen JSON-object.');
+	if (!isRecord(raw)) return fail('Invalid file: the content is not a JSON object.');
 	if (raw.app !== 'MultiUseTimer') {
-		return fail('Ongeldig bestand: dit is geen MultiUseTimer-backup.');
+		return fail('Invalid file: this is not a MultiUseTimer backup.');
 	}
 
 	const version = raw.version;
 	if (typeof version !== 'number' || !Number.isInteger(version) || version < 1) {
-		return fail('Ongeldig bestand: onbekende versie.');
+		return fail('Invalid file: unknown version.');
 	}
 	if (version > 1) {
 		return fail(
-			`Dit bestand is gemaakt met een nieuwere versie (exportformaat ${version}) en kan niet worden gelezen.`
+			`This file was created with a newer version (export format ${version}) and cannot be read.`
 		);
 	}
 
-	if (!Array.isArray(raw.events)) return fail('Ongeldig bestand: events ontbreken.');
+	if (!Array.isArray(raw.events)) return fail('Invalid file: events are missing.');
 
 	const events: TimerEvent[] = [];
 	let invalidCount = 0;

@@ -126,9 +126,9 @@ describe('validateEventInput', () => {
 		});
 		expect(result.ok).toBe(false);
 		expect(result.errors.length).toBeGreaterThanOrEqual(2);
-		expect(result.errors.some((error) => error.includes('titel'))).toBe(true);
-		expect(result.errors.some((error) => error.includes('datum'))).toBe(true);
-		expect(result.errors.some((error) => error.includes('eenheid'))).toBe(true);
+		expect(result.errors.some((error) => error.includes('title'))).toBe(true);
+		expect(result.errors.some((error) => error.includes('date'))).toBe(true);
+		expect(result.errors.some((error) => error.includes('unit'))).toBe(true);
 	});
 });
 
@@ -156,7 +156,7 @@ describe('validateImportPayload', () => {
 	it('weigert nieuwere exportversies', () => {
 		const result = validateImportPayload({ app: 'MultiUseTimer', version: 2, events: [] });
 		expect(result.ok).toBe(false);
-		expect(result.errors[0]).toContain('nieuwere versie');
+		expect(result.errors[0]).toContain('newer version');
 	});
 
 	it('telt ongeldige events in plaats van het hele bestand te weigeren', () => {

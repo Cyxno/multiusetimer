@@ -139,8 +139,6 @@ choose:
 If the file is invalid or created with a newer export format, the import is rejected and the
 existing data is left untouched.
 
-> Note: the application's UI is in Dutch ("Exporteren" = Export, "Importeren" = Import).
-
 ## Setting the application up locally again
 
 ```bash

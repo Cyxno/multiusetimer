@@ -81,23 +81,23 @@ export function isQuotaError(error: unknown): boolean {
 
 export function describeStorageError(error: unknown): string {
 	if (isQuotaError(error)) {
-		return 'De browseropslag zit vol. Verwijder timers of afbeeldingen en probeer het opnieuw.';
+		return 'Browser storage is full. Remove timers or images and try again.';
 	}
 	if (error instanceof Error && error.name === 'InvalidStateError') {
-		return 'De browseropslag is niet beschikbaar (bijvoorbeeld in een privévenster zonder opslag).';
+		return 'Browser storage is unavailable (for example in a private window without storage).';
 	}
-	return 'Opslaan in de browser is mislukt. De wijziging staat in beeld, maar is mogelijk niet bewaard.';
+	return 'Saving to browser storage failed. The change is still on screen, but it may not have been saved.';
 }
 
 function describeImportError(error: unknown): string {
 	if (error instanceof SyntaxError) {
-		return 'Ongeldig bestand: de inhoud is geen geldige JSON.';
+		return 'Invalid file: the content is not valid JSON.';
 	}
 	if (isQuotaError(error)) {
-		return 'Niet genoeg opslagruimte om deze backup te importeren. De bestaande timers zijn ongewijzigd.';
+		return 'Not enough storage space to import this backup. The existing timers are unchanged.';
 	}
 	if (error instanceof Error && error.message) return error.message;
-	return 'De import is mislukt. De bestaande timers zijn ongewijzigd.';
+	return 'The import failed. The existing timers are unchanged.';
 }
 
 // ——— Indexbeheer ———
@@ -247,7 +247,7 @@ export async function importEvents(json: string, mode: ImportMode): Promise<Impo
 	try {
 		payload = JSON.parse(json);
 	} catch {
-		throw new Error('Ongeldig bestand: de inhoud is geen geldige JSON.');
+		throw new Error('Invalid file: the content is not valid JSON.');
 	}
 
 	const validated = validateImportPayload(payload);

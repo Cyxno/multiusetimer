@@ -35,7 +35,7 @@
 	const isNow = $derived(duration?.direction === 'now');
 
 	const badgeText = $derived(
-		event.mode === 'countup' ? 'Sinds' : isNow ? 'Nu' : isFuture ? 'Aftellen' : 'Voorbij'
+		event.mode === 'countup' ? 'Since' : isNow ? 'Now' : isFuture ? 'Countdown' : 'Past'
 	);
 	const badgeKind = $derived(
 		event.mode === 'countup' ? 'past' : isNow ? 'now' : isFuture ? 'future' : 'past'
@@ -43,7 +43,7 @@
 
 	const targetText = $derived.by(() => {
 		try {
-			return new Intl.DateTimeFormat('nl-NL', {
+			return new Intl.DateTimeFormat('en-GB', {
 				dateStyle: 'long',
 				timeStyle: 'short'
 			}).format(new Date(event.targetDate));
@@ -125,7 +125,7 @@
 				class="card__menu-button"
 				aria-haspopup="menu"
 				aria-expanded={menuOpen}
-				aria-label="Acties voor {event.title}"
+				aria-label="Actions for {event.title}"
 				onclick={toggleMenu}
 			>
 				<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
@@ -135,23 +135,23 @@
 				</svg>
 			</button>
 			{#if menuOpen}
-				<div class="card__menu-list" role="menu" aria-label="Acties voor {event.title}">
+				<div class="card__menu-list" role="menu" aria-label="Actions for {event.title}">
 					<button type="button" role="menuitem" onclick={() => { closeMenu(); onEdit(event); }}>
-						Bewerken
+						Edit
 					</button>
 					<button
 						type="button"
 						role="menuitem"
 						onclick={() => { closeMenu(); onMove(event.id, 'up'); }}
 					>
-						<span aria-hidden="true">↑</span> Omhoog verplaatsen
+						<span aria-hidden="true">↑</span> Move up
 					</button>
 					<button
 						type="button"
 						role="menuitem"
 						onclick={() => { closeMenu(); onMove(event.id, 'down'); }}
 					>
-						<span aria-hidden="true">↓</span> Omlaag verplaatsen
+						<span aria-hidden="true">↓</span> Move down
 					</button>
 					<button
 						type="button"
@@ -159,7 +159,7 @@
 						class="card__menu-danger"
 						onclick={() => { closeMenu(); onDelete(event); }}
 					>
-						Verwijderen
+						Delete
 					</button>
 				</div>
 			{/if}
@@ -171,7 +171,7 @@
 	</div>
 
 	<footer class="card__footer">
-		<span class="card__date">{event.mode === 'countup' ? 'Sinds' : 'Doel'}: {targetText}</span>
+		<span class="card__date">{event.mode === 'countup' ? 'Since' : 'Target'}: {targetText}</span>
 	</footer>
 </article>
 

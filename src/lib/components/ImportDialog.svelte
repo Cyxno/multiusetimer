@@ -38,7 +38,7 @@
 		if (!file) return;
 
 		if (file.size > 64 * 1024 * 1024) {
-			parseError = 'Dit bestand is te groot (max. 64 MB).';
+			parseError = 'This file is too large (max. 64 MB).';
 			input.value = '';
 			return;
 		}
@@ -57,7 +57,7 @@
 				};
 			}
 		} catch {
-			parseError = 'Ongeldig bestand: de inhoud is geen geldige JSON.';
+			parseError = 'Invalid file: the content is not valid JSON.';
 		} finally {
 			input.value = '';
 		}
@@ -70,15 +70,15 @@
 			const result = await eventStore.import(fileText, mode);
 			if (result.mode === 'replace') {
 				notify.success(
-					`Import voltooid: ${result.imported} timer${result.imported === 1 ? '' : 's'} hersteld.`
+					`Import complete: ${result.imported} timer${result.imported === 1 ? '' : 's'} restored.`
 				);
 			} else {
 				notify.success(
-					`Import voltooid: ${result.imported} toegevoegd, ${result.skippedExisting} overgeslagen (bestonden al).`
+					`Import complete: ${result.imported} added, ${result.skippedExisting} skipped (already exist).`
 				);
 			}
 			if (result.invalid > 0) {
-				notify.info(`${result.invalid} ongeldige regel${result.invalid === 1 ? '' : 's'} overgeslagen.`);
+				notify.info(`${result.invalid} invalid ${result.invalid === 1 ? 'entry' : 'entries'} skipped.`);
 			}
 			onclose();
 		} catch (error) {
@@ -91,11 +91,11 @@
 	}
 </script>
 
-<Modal {open} title="Timers importeren" onclose={onclose}>
+<Modal {open} title="Import timers" onclose={onclose}>
 	<div class="import">
 		<p class="import__intro">
-			Kies een MultiUseTimer-backup (.json). Bij <strong>Toevoegen</strong> blijven bestaande
-			timers staan; bij <strong>Vervangen</strong> verdwijnen ze uit de huidige lijst.
+			Choose a MultiUseTimer backup (.json). With <strong>Merge</strong>, existing timers are
+			kept; with <strong>Replace</strong>, they are removed from the current list.
 		</p>
 
 		{#if !summary}
@@ -103,37 +103,37 @@
 				<input
 					type="file"
 					accept="application/json,.json"
-					aria-label="JSON-backupbestand kiezen"
+					aria-label="Choose a JSON backup file"
 					disabled={busy}
 					onchange={handleFile}
 				/>
 				<span aria-hidden="true">📄</span>
-				<span>Kies een .json-bestand</span>
+				<span>Choose a .json file</span>
 			</label>
 		{:else}
 			<div class="import__summary">
 				<p class="import__file">{fileName}</p>
 				<p>
-					{summary.events} geldige timer{summary.events === 1 ? '' : 's'}
+					{summary.events} valid timer{summary.events === 1 ? '' : 's'}
 					{#if summary.invalidCount > 0}
-						· <span class="import__warn">{summary.invalidCount} ongeldige regel{summary.invalidCount === 1 ? '' : 's'} wordt overgeslagen</span>
+						· <span class="import__warn">{summary.invalidCount} invalid {summary.invalidCount === 1 ? 'entry' : 'entries'} will be skipped</span>
 					{/if}
 				</p>
 
 				<fieldset class="import__modes">
-					<legend>Kies wat er met de geïmporteerde timers gebeurt</legend>
+					<legend>Choose what happens with the imported timers</legend>
 					<label class="import__mode">
 						<input type="radio" bind:group={mode} value="merge" />
 						<span>
-							<strong>Toevoegen</strong>
-							<small>Bestaande timers blijven staan; timers die al bestaan worden overgeslagen.</small>
+							<strong>Merge</strong>
+							<small>Existing timers are kept; timers that already exist are skipped.</small>
 						</span>
 					</label>
 					<label class="import__mode">
 						<input type="radio" bind:group={mode} value="replace" />
 						<span>
-							<strong>Vervangen</strong>
-							<small>De huidige lijst wordt volledig vervangen door dit bestand.</small>
+							<strong>Replace</strong>
+							<small>The current list is fully replaced by this file.</small>
 						</span>
 					</label>
 				</fieldset>
@@ -146,14 +146,14 @@
 	</div>
 
 	{#snippet footer()}
-		<button type="button" class="btn" onclick={onclose} disabled={busy}>Annuleren</button>
+		<button type="button" class="btn" onclick={onclose} disabled={busy}>Cancel</button>
 		<button
 			type="button"
 			class="btn btn--primary"
 			disabled={busy || !summary || summary.events === 0}
 			onclick={runImport}
 		>
-			{busy ? 'Importeren…' : 'Importeren'}
+			{busy ? 'Importing…' : 'Import'}
 		</button>
 	{/snippet}
 </Modal>

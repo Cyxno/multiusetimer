@@ -1,13 +1,13 @@
 {
 	"name": "MultiUseTimer",
 	"short_name": "Timers",
-	"description": "Lokale countdown- en count-up-timers voor belangrijke momenten.",
+	"description": "Local countdown and count-up timers for the moments that matter.",
 	"start_url": "./",
 	"scope": "./",
 	"display": "standalone",
 	"background_color": "#0a0d14",
 	"theme_color": "#0a0d14",
-	"lang": "nl",
+	"lang": "en",
 	"icons": [
 		{
 			"src": "./icons/icon-192.png",

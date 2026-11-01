@@ -94,7 +94,7 @@
 		>
 			<header class="dialog__header">
 				<h2 class="dialog__title">{title}</h2>
-				<button type="button" class="dialog__close" aria-label="Sluiten" onclick={onclose}>
+				<button type="button" class="dialog__close" aria-label="Close" onclick={onclose}>
 					<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
 						<path
 							d="M5 5l10 10M15 5L5 15"

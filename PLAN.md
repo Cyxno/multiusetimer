@@ -23,7 +23,7 @@ bewuste afbakening:
   in de browser gehydrateerd. Daardoor is de site overal te hosten en is de eerste render snel.
 - **localForage 1.10** uitsluitend in de opslaglaag (`src/lib/db/storage.ts`); componenten en
   stores spreken localForage nooit direct aan.
-- **svelte-dnd-action 0.9.80** voor drag-and-drop, met de Nederlandse schermlezerteksten van de
+- **svelte-dnd-action 0.9.80** voor drag-and-drop, met de schermlezerteksten (Engels) van de
   library (`setAriaStrings`).
 - **date-fns 4** voor kalenderberekeningen (maanden-anchoring, kalenderdagen).
 - **Vitest 5** + **fake-indexeddb** voor unit- en integratietests zonder echte browser.
@@ -161,7 +161,7 @@ gegevens worden nooit stilzwijgend weggegooid.
 - `importEvents` ondersteunt `replace` (volledige vervanging) en `merge` (toevoegen; events met
   een bestaand id worden overgeslagen zodat bestaande gegevens behouden blijven) en is
   transactie-achtig: bij een fout vóór het wegschrijven verandert er niets.
-- Quota-fouten worden herkend (`isQuotaError`) en in begrijpelijk Nederlands gemeld.
+- Quota-fouten worden herkend (`isQuotaError`) en in begrijpelijke Engelse meldingen aan de gebruiker gerapporteerd.
 
 **Afbeeldingen** worden als data-URL in het event bewaard. `ImagePicker` begrenst de invoer
 (8 MB, MIME-types PNG/JPEG/WebP/GIF), verkleint grote afbeeldingen via canvas naar max. 1920 px
@@ -182,7 +182,7 @@ opslaglimiet van de validatielaag.
   horizontale overflow op mobiel; drag-and-drop via svelte-dnd-action met eigen
   drop-target-stijl. Verplaatsen kan ook via het kaartmenu (toegankelijk alternatief).
 - **Formulier** (`EventForm`, modal) met live voorbeeldweergave van de opgeslagen wandklok
-  (inclusief UTC-offset) en van de duur met de gekozen eenheden; veldvalidatie met Nederlandse
+  (inclusief UTC-offset) en van de duur met de gekozen eenheden; veldvalidatie met Engelse
   meldingen, `aria-invalid`/`aria-describedby`, dubbele submits geblokkeerd, Escape/sluitknop
   en focusval in `Modal`.
 - **Verwijderen** gaat via een bevestigingsdialoog (`ConfirmDialog`); er worden geen

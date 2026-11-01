@@ -204,11 +204,11 @@ describe('buildDurationDisplay — presentatie', () => {
 		};
 		const display = buildDurationDisplay(result, MDHMS, true);
 		expect(display.blocks.map((block) => block.unit)).toEqual(['months', 'days']);
-		expect(display.blocks[0]).toMatchObject({ text: '1', label: 'maand' });
-		expect(display.blocks[1]).toMatchObject({ text: '3', label: 'dagen' });
+		expect(display.blocks[0]).toMatchObject({ text: '1', label: 'month' });
+		expect(display.blocks[1]).toMatchObject({ text: '3', label: 'days' });
 		expect(display.clock).toBe('08:42:15');
 		// Het aria-label is het enige wat schermlezers voorlezen: volledige detail.
-		expect(display.ariaLabel).toBe('1 maand, 3 dagen, 8 uur, 42 minuten, 15 seconden');
+		expect(display.ariaLabel).toBe('1 month, 3 days, 8 hours, 42 minutes, 15 seconds');
 	});
 
 	it('zonder de eenheid seconden toont de klok alleen uren en minuten', () => {
@@ -227,7 +227,7 @@ describe('buildDurationDisplay — presentatie', () => {
 		const display = buildDurationDisplay(result, ['days', 'minutes', 'seconds'], true);
 		expect(display.clock).toBeNull();
 		expect(display.trailing.map((block) => block.unit)).toEqual(['minutes', 'seconds']);
-		expect(display.trailing[0]).toMatchObject({ text: '12', label: 'minuten' });
+		expect(display.trailing[0]).toMatchObject({ text: '12', label: 'minutes' });
 	});
 
 	it('onderdrukt nulwaarden maar toont de kleinste eenheid in de nulstatus', () => {
@@ -238,15 +238,15 @@ describe('buildDurationDisplay — presentatie', () => {
 		const display = buildDurationDisplay(zero, ['months', 'days'], true);
 		expect(display.blocks).toHaveLength(0);
 		expect(display.trailing).toHaveLength(1);
-		expect(display.trailing[0]).toMatchObject({ unit: 'seconds', text: '0', label: 'seconden' });
+		expect(display.trailing[0]).toMatchObject({ unit: 'seconds', text: '0', label: 'seconds' });
 		expect(display.allZero).toBe(true);
-		expect(display.ariaLabel).toBe('0 seconden');
+		expect(display.ariaLabel).toBe('0 seconds');
 
 		// Zonder seconden is de kleinste geselecteerde eenheid "dagen".
 		const displayNoSeconds = buildDurationDisplay(zero, ['months', 'days'], false);
 		expect(displayNoSeconds.blocks).toHaveLength(1);
-		expect(displayNoSeconds.blocks[0]).toMatchObject({ unit: 'days', text: '0', label: 'dagen' });
-		expect(displayNoSeconds.ariaLabel).toBe('0 dagen');
+		expect(displayNoSeconds.blocks[0]).toMatchObject({ unit: 'days', text: '0', label: 'days' });
+		expect(displayNoSeconds.ariaLabel).toBe('0 days');
 	});
 
 	it('toont in de nulstatus met uren de digitale klok op nul', () => {
@@ -283,7 +283,7 @@ describe('buildDurationDisplay — presentatie', () => {
 			months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 12, direction: 'future'
 		};
 		const display = buildDurationDisplay(result, ['seconds'], true);
-		expect(display.trailing[0]).toMatchObject({ unit: 'seconds', text: '12', label: 'seconden' });
-		expect(display.ariaLabel).toBe('12 seconden');
+		expect(display.trailing[0]).toMatchObject({ unit: 'seconds', text: '12', label: 'seconds' });
+		expect(display.ariaLabel).toBe('12 seconds');
 	});
 });

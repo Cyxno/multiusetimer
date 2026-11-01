@@ -9,8 +9,8 @@
 		open,
 		title,
 		message,
-		confirmLabel = 'Bevestigen',
-		cancelLabel = 'Annuleren',
+		confirmLabel = 'Confirm',
+		cancelLabel = 'Cancel',
 		danger = false,
 		busy = false,
 		onconfirm,
@@ -43,7 +43,7 @@
 			onclick={onconfirm}
 			disabled={busy}
 		>
-			{busy ? 'Bezig…' : confirmLabel}
+			{busy ? 'Working…' : confirmLabel}
 		</button>
 	{/snippet}
 </Modal>

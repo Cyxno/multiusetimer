@@ -50,7 +50,7 @@
 		{/if}
 	</div>
 {:else}
-	<span class="duration duration--placeholder tabular" role="timer" aria-label="Tijd wordt geladen">
+	<span class="duration duration--placeholder tabular" role="timer" aria-label="Time is loading">
 		--&colon;--
 	</span>
 {/if}

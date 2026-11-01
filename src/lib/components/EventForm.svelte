@@ -115,7 +115,7 @@
 		if (!dateValue || !timeValue) return null;
 		try {
 			const time = timeValue.length === 5 ? `${timeValue}:00` : timeValue;
-			return new Intl.DateTimeFormat('nl-NL', {
+			return new Intl.DateTimeFormat('en-GB', {
 				weekday: 'long',
 				day: 'numeric',
 				month: 'long',
@@ -136,17 +136,17 @@
 	});
 
 	const titleError = $derived(
-		attemptedSubmit && !title.trim() ? 'Vul een titel in.' : title.trim().length > 120 ? 'Maximaal 120 tekens.' : ''
+		attemptedSubmit && !title.trim() ? 'Enter a title.' : title.trim().length > 120 ? 'Maximum 120 characters.' : ''
 	);
 	const dateError = $derived(
 		attemptedSubmit && (!dateValue || !timeValue)
-			? 'Vul een geldige datum en tijd in.'
+			? 'Enter a valid date and time.'
 			: attemptedSubmit && !previewIso
-				? 'Deze datum en tijd bestaan niet; pas de invoer aan.'
+				? "This date and time don't exist; adjust the input."
 				: ''
 	);
 	const unitsError = $derived(
-		attemptedSubmit && selectedUnits.length === 0 ? 'Kies minimaal één tijdseenheid.' : ''
+		attemptedSubmit && selectedUnits.length === 0 ? 'Select at least one time unit.' : ''
 	);
 
 	function toggleUnit(unit: TimeUnit): void {
@@ -180,26 +180,26 @@
 		try {
 			if (event) {
 				await eventStore.update(event.id, input);
-				notify.success('Timer bijgewerkt.');
+				notify.success('Timer updated.');
 			} else {
 				await eventStore.add(input);
-				notify.success('Timer toegevoegd.');
+				notify.success('Timer added.');
 			}
 			onclose();
 		} catch (error) {
-			notify.error(error instanceof Error ? error.message : 'Opslaan is mislukt.');
+			notify.error(error instanceof Error ? error.message : 'Saving failed.');
 		} finally {
 			busy = false;
 		}
 	}
 </script>
 
-<Modal {open} title={event ? 'Timer bewerken' : 'Nieuwe timer'} {onclose}>
+<Modal {open} title={event ? 'Edit timer' : 'New timer'} {onclose}>
 	<form class="form" id="event-form" onsubmit={handleSubmit} novalidate>
 		<div class="form__grid">
 			<div class="field form__span">
 				<label class="field__label" for="event-title">
-					Titel <span class="field__required" aria-hidden="true">*</span>
+					Title <span class="field__required" aria-hidden="true">*</span>
 				</label>
 				<input
 					id="event-title"
@@ -210,7 +210,7 @@
 					bind:value={title}
 					aria-invalid={titleError ? 'true' : undefined}
 					aria-describedby={titleError ? 'event-title-error' : undefined}
-					placeholder="Bijv. Vakantie Portugal"
+					placeholder="e.g. Holiday in Portugal"
 				/>
 				{#if titleError}
 					<p class="field__error" id="event-title-error">{titleError}</p>
@@ -218,36 +218,36 @@
 			</div>
 
 			<div class="field form__span">
-				<label class="field__label" for="event-subtitle">Subtitel <span class="field__hint-inline">(optioneel)</span></label>
+				<label class="field__label" for="event-subtitle">Subtitle <span class="field__hint-inline">(optional)</span></label>
 				<input
 					id="event-subtitle"
 					class="input"
 					type="text"
 					maxlength="200"
 					bind:value={subtitle}
-					placeholder="Bijv. Het hele gezin"
+					placeholder="e.g. The whole family"
 				/>
 			</div>
 
 			<fieldset class="field form__span form__fieldset">
-				<legend class="field__label">Modus</legend>
+				<legend class="field__label">Mode</legend>
 				<div class="form__modes">
 					<label class="form__mode" class:form__mode--active={mode === 'countdown'}>
 						<input type="radio" name="mode" value="countdown" bind:group={mode} />
-						<span>Aftellen</span>
-						<small>binnenkort</small>
+						<span>Countdown</span>
+						<small>to a future moment</small>
 					</label>
 					<label class="form__mode" class:form__mode--active={mode === 'countup'}>
 						<input type="radio" name="mode" value="countup" bind:group={mode} />
-						<span>Vastleggen</span>
-						<small>al verstreken</small>
+						<span>Count-up</span>
+						<small>since a past moment</small>
 					</label>
 				</div>
 			</fieldset>
 
 			<div class="field">
 				<label class="field__label" for="event-date">
-					Datum <span class="field__required" aria-hidden="true">*</span>
+					Date <span class="field__required" aria-hidden="true">*</span>
 				</label>
 				<input
 					id="event-date"
@@ -262,7 +262,7 @@
 
 			<div class="field">
 				<label class="field__label" for="event-time">
-					Tijd <span class="field__required" aria-hidden="true">*</span>
+					Time <span class="field__required" aria-hidden="true">*</span>
 				</label>
 				<input
 					id="event-time"
@@ -284,7 +284,7 @@
 						{/if}
 					</p>
 				{:else}
-					<p class="field__hint">Kies een datum en tijd; de invoer geldt als lokale tijd.</p>
+					<p class="field__hint">Pick a date and time; input is interpreted as local time.</p>
 				{/if}
 				{#if previewDisplay}
 					<div class="form__preview-duration">
@@ -297,7 +297,7 @@
 			</div>
 
 			<div class="field form__span">
-				<span class="field__label" id="units-label">Tijdseenheden</span>
+				<span class="field__label" id="units-label">Time units</span>
 				<div class="form__units" role="group" aria-labelledby="units-label">
 					{#each UNIT_CHECKBOXES as unit (unit)}
 						<label class="form__unit" class:form__unit--active={selectedUnits.includes(unit)}>
@@ -307,16 +307,16 @@
 								onchange={() => toggleUnit(unit)}
 							/>
 							{unit === 'months'
-								? 'Maanden'
+								? 'Months'
 								: unit === 'weeks'
-									? 'Weken'
+									? 'Weeks'
 									: unit === 'days'
-										? 'Dagen'
+										? 'Days'
 										: unit === 'hours'
-											? 'Uren'
+											? 'Hours'
 											: unit === 'minutes'
-												? 'Minuten'
-												: 'Seconden'}
+												? 'Minutes'
+												: 'Seconds'}
 						</label>
 					{/each}
 				</div>
@@ -324,7 +324,7 @@
 					<p class="field__error">{unitsError}</p>
 				{:else}
 					<p class="field__hint">
-						Niet gekozen eenheden tellen door in de kleinste gekozen eenheid.
+						Units you leave out roll up into the smallest selected unit.
 					</p>
 				{/if}
 			</div>
@@ -333,18 +333,18 @@
 				<span class="switch">
 					<input type="checkbox" id="event-show-seconds" bind:checked={showSeconds} />
 					<span class="switch__track" aria-hidden="true"></span>
-					<span class="switch__text">Seconden tonen</span>
+					<span class="switch__text">Show seconds</span>
 				</span>
 			</div>
 
 			<div class="field form__span">
-				<span class="field__label" id="accent-label">Accentkleur</span>
+				<span class="field__label" id="accent-label">Accent color</span>
 				<div class="form__colors" role="group" aria-labelledby="accent-label">
 					<button
 						type="button"
 						class="form__color form__color--none"
 						class:form__color--active={accentColor === null}
-						aria-label="Geen accentkleur"
+						aria-label="No accent color"
 						aria-pressed={accentColor === null}
 						onclick={() => (accentColor = null)}
 					>
@@ -356,7 +356,7 @@
 							class="form__color"
 							class:form__color--active={accentColor?.toLowerCase() === preset}
 							style="background: {preset}"
-							aria-label="Accentkleur {preset}"
+							aria-label="Accent color {preset}"
 							aria-pressed={accentColor?.toLowerCase() === preset}
 							onclick={() => (accentColor = preset)}
 						></button>
@@ -364,11 +364,11 @@
 					<label
 						class="form__color form__color--custom"
 						style="background: {accentColor ?? 'var(--surface-3)'}"
-						title="Eigen kleur kiezen"
+						title="Pick a custom color"
 					>
 						<input
 							type="color"
-							aria-label="Eigen accentkleur kiezen"
+							aria-label="Pick a custom accent color"
 							value={accentColor ?? '#6c8cff'}
 							oninput={(event) => (accentColor = event.currentTarget.value)}
 						/>
@@ -377,19 +377,19 @@
 			</div>
 
 			<div class="field form__span">
-				<span class="field__label">Afbeelding <span class="field__hint-inline">(optioneel)</span></span>
+				<span class="field__label">Image <span class="field__hint-inline">(optional)</span></span>
 				<ImagePicker value={image} onchange={(next) => (image = next)} />
 			</div>
 		</div>
 
 		<!-- Verzenden via de modaalvoettekst hieronder -->
-		<button type="submit" class="visually-hidden" tabindex="-1">Opslaan</button>
+		<button type="submit" class="visually-hidden" tabindex="-1">Save</button>
 	</form>
 
 	{#snippet footer()}
-		<button type="button" class="btn" onclick={onclose} disabled={busy}>Annuleren</button>
+		<button type="button" class="btn" onclick={onclose} disabled={busy}>Cancel</button>
 		<button type="submit" form="event-form" class="btn btn--primary" disabled={busy}>
-			{busy ? 'Bezig…' : event ? 'Wijzigingen opslaan' : 'Timer toevoegen'}
+			{busy ? 'Saving…' : event ? 'Save changes' : 'Add timer'}
 		</button>
 	{/snippet}
 </Modal>

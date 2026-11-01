@@ -58,8 +58,8 @@ describe('eventStore — mutaties', () => {
 	});
 
 	it('gooit een fout bij ongeldige invoer', async () => {
-		await expect(eventStore.add(input({ title: '   ' }))).rejects.toThrow(/titel/i);
-		await expect(eventStore.add(input({ targetDate: 'geen datum' }))).rejects.toThrow(/datum/i);
+		await expect(eventStore.add(input({ title: '   ' }))).rejects.toThrow(/title/i);
+		await expect(eventStore.add(input({ targetDate: 'geen datum' }))).rejects.toThrow(/date/i);
 	});
 
 	it('verwijdert timers', async () => {

@@ -61,12 +61,12 @@ const MS_PER_HOUR = 3_600_000;
 const UNIT_ORDER: readonly TimeUnit[] = ['months', 'weeks', 'days', 'hours', 'minutes', 'seconds'];
 
 const UNIT_LABELS: Record<TimeUnit, [singular: string, plural: string]> = {
-	months: ['maand', 'maanden'],
-	weeks: ['week', 'weken'],
-	days: ['dag', 'dagen'],
-	hours: ['uur', 'uur'],
-	minutes: ['minuut', 'minuten'],
-	seconds: ['seconde', 'seconden']
+	months: ['month', 'months'],
+	weeks: ['week', 'weeks'],
+	days: ['day', 'days'],
+	hours: ['hour', 'hours'],
+	minutes: ['minute', 'minutes'],
+	seconds: ['second', 'seconds']
 };
 
 export function unitLabel(unit: TimeUnit, value: number): string {

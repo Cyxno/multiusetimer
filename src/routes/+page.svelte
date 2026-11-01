@@ -48,9 +48,9 @@
 		const title = deleteTarget.title;
 		try {
 			await eventStore.remove(deleteTarget.id);
-			notify.success(`"${title}" verwijderd.`);
+			notify.success(`"${title}" deleted.`);
 		} catch (error) {
-			notify.error(error instanceof Error ? error.message : 'Verwijderen is mislukt.');
+			notify.error(error instanceof Error ? error.message : 'Deleting failed.');
 		} finally {
 			deleteBusy = false;
 			deleteTarget = null;
@@ -72,9 +72,9 @@
 			link.click();
 			link.remove();
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
-			notify.success(`Backup gedownload (${payload.events.length} timer${payload.events.length === 1 ? '' : 's'}).`);
+			notify.success(`Backup downloaded (${payload.events.length} timer${payload.events.length === 1 ? '' : 's'}).`);
 		} catch (error) {
-			notify.error(`Export mislukt. ${describeStorageError(error)}`);
+			notify.error(`Export failed. ${describeStorageError(error)}`);
 		} finally {
 			exportBusy = false;
 		}
@@ -125,7 +125,7 @@
 							stroke-linejoin="round"
 						/>
 					</svg>
-					Importeren
+					Import
 				</button>
 				<button
 					type="button"
@@ -143,7 +143,7 @@
 							stroke-linejoin="round"
 						/>
 					</svg>
-					{exportBusy ? 'Bezig…' : 'Exporteren'}
+					{exportBusy ? 'Exporting…' : 'Export'}
 				</button>
 				<button type="button" class="btn btn--primary btn--small" onclick={openNewTimer}>
 					<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
@@ -155,7 +155,7 @@
 							stroke-linecap="round"
 						/>
 					</svg>
-					Nieuwe timer
+					New timer
 				</button>
 			</div>
 		</div>
@@ -184,12 +184,12 @@
 			</div>
 		{:else if eventStore.status === 'error'}
 			<div class="error-panel">
-				<h1>Timers konden niet worden geladen</h1>
+				<h1>Timers could not be loaded</h1>
 				<p>
-					{eventStore.storageError ?? 'Er is een onbekende fout opgetreden bij het lezen van de browseropslag.'}
+					{eventStore.storageError ?? 'An unknown error occurred while reading browser storage.'}
 				</p>
 				<button type="button" class="btn btn--primary" onclick={() => void eventStore.retryLoad()}>
-					Opnieuw proberen
+					Try again
 				</button>
 			</div>
 		{:else if eventStore.events.length === 0}
@@ -203,13 +203,13 @@
 						<circle cx="20" cy="30" r="3.5" fill="var(--accent)" opacity="0.35" />
 					</svg>
 				</div>
-				<h1>Nog geen timers</h1>
+				<h1>No timers yet</h1>
 				<p>
-					Maak een aftelling naar een vakantie, verjaardag of feestdag — of leg vast hoe lang
-					geleden iets heeft plaatsgevonden. Alles blijft lokaal in je browser bewaard.
+					Count down to a holiday, birthday or party — or track how long ago something
+					happened. Everything stays local in your browser.
 				</p>
 				<button type="button" class="btn btn--primary" onclick={openNewTimer}>
-					Timer toevoegen
+					Add timer
 				</button>
 			</div>
 		{:else}
@@ -222,9 +222,9 @@
 
 <ConfirmDialog
 	open={deleteTarget !== null}
-	title="Timer verwijderen"
-	message={'Weet je zeker dat je "' + (deleteTarget?.title ?? '') + '" wilt verwijderen? Dit kan niet ongedaan worden gemaakt.'}
-	confirmLabel="Verwijderen"
+	title="Delete timer"
+	message={'Are you sure you want to delete "' + (deleteTarget?.title ?? '') + '"? This cannot be undone.'}
+	confirmLabel="Delete"
 	danger
 	busy={deleteBusy}
 	onconfirm={confirmDelete}

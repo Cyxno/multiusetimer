@@ -209,7 +209,7 @@ describe('importEvents', () => {
 
 		const nieuwer = { app: 'MultiUseTimer', version: 99, events: [] };
 		await expect(importEvents(JSON.stringify(nieuwer), 'replace')).rejects.toThrow(
-			/nieuwere versie/
+			/newer version/
 		);
 	});
 });

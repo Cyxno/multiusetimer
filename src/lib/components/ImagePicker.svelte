@@ -82,11 +82,11 @@
 		if (!file) return;
 		error = '';
 		if (!ALLOWED_TYPES.includes(file.type)) {
-			error = 'Kies een afbeelding in PNG, JPEG, WebP of GIF.';
+			error = 'Pick an image in PNG, JPEG, WebP or GIF format.';
 			return;
 		}
 		if (file.size > MAX_INPUT_BYTES) {
-			error = 'De afbeelding is te groot. Kies een bestand van maximaal 8 MB.';
+			error = 'The image is too large. Choose a file of at most 8 MB.';
 			return;
 		}
 
@@ -97,13 +97,13 @@
 			const resized = file.type === 'image/gif' ? null : await downscaleToDataUrl(dataUrl);
 			const candidate = resized && resized.length < dataUrl.length ? resized : dataUrl;
 			if (candidate.length > MAX_IMAGE_LENGTH) {
-				error = 'De afbeelding is te groot om lokaal op te slaan.';
+				error = 'The image is too large to store locally.';
 				return;
 			}
 			apply(candidate);
 			tab = 'upload';
 		} catch {
-			error = 'De afbeelding kon niet worden gelezen. Probeer een ander bestand.';
+			error = 'The image could not be read. Try another file.';
 		} finally {
 			busy = false;
 		}
@@ -113,11 +113,11 @@
 		urlError = '';
 		const candidate = urlDraft.trim();
 		if (!candidate) {
-			urlError = 'Voer een afbeeldings-URL in.';
+			urlError = 'Enter an image URL.';
 			return;
 		}
 		if (normalizeImage(candidate) !== candidate) {
-			urlError = 'Voer een geldige http(s)-URL naar een afbeelding in.';
+			urlError = 'Enter a valid http(s) URL to an image.';
 			return;
 		}
 		apply(candidate);
@@ -133,7 +133,7 @@
 </script>
 
 <div class="picker">
-	<div class="picker__tabs" role="tablist" aria-label="Afbeeldingsbron">
+	<div class="picker__tabs" role="tablist" aria-label="Image source">
 		<button
 			type="button"
 			role="tab"
@@ -141,7 +141,7 @@
 			class:picker__tab--active={tab === 'upload'}
 			onclick={() => (tab = 'upload')}
 		>
-			Uploaden
+			Upload
 		</button>
 		<button
 			type="button"
@@ -150,7 +150,7 @@
 			class:picker__tab--active={tab === 'url'}
 			onclick={() => (tab = 'url')}
 		>
-			Extern via URL
+			From URL
 		</button>
 	</div>
 
@@ -160,7 +160,7 @@
 				<input
 					type="file"
 					accept="image/png,image/jpeg,image/webp,image/gif"
-					aria-label="Afbeeldingsbestand kiezen"
+					aria-label="Choose an image file"
 					disabled={busy}
 					onchange={(event) => {
 						const input = event.currentTarget;
@@ -169,11 +169,11 @@
 					}}
 				/>
 				{#if busy}
-					Bezig met verwerken…
+					Processing…
 				{:else}
 					<span aria-hidden="true">📁</span>
-					<span>Kies een afbeelding (PNG, JPEG, WebP of GIF, max. 8 MB)</span>
-					<span class="picker__hint">Grote afbeeldingen worden automatisch verkleind.</span>
+					<span>Choose an image (PNG, JPEG, WebP or GIF, max. 8 MB)</span>
+					<span class="picker__hint">Large images are resized automatically.</span>
 				{/if}
 			</label>
 			{#if error}
@@ -187,7 +187,7 @@
 					type="url"
 					class="input"
 					placeholder="https://voorbeeld.nl/foto.jpg"
-					aria-label="Externe afbeeldings-URL"
+					aria-label="External image URL"
 					aria-invalid={urlError ? 'true' : undefined}
 					bind:value={urlDraft}
 					onkeydown={(event) => {
@@ -197,12 +197,12 @@
 						}
 					}}
 				/>
-				<button type="button" class="btn btn--small" onclick={applyUrl}>Gebruiken</button>
+				<button type="button" class="btn btn--small" onclick={applyUrl}>Use</button>
 			</div>
 			{#if urlError}
 				<p class="picker__error" role="alert">{urlError}</p>
 			{:else}
-				<p class="picker__hint">Externe afbeeldingen kunnen offline of na verwijdering verdwijnen.</p>
+				<p class="picker__hint">External images may disappear offline or when the source removes them.</p>
 			{/if}
 		</div>
 	{/if}
@@ -212,21 +212,21 @@
 			<div class="picker__preview-media">
 				<img
 					src={value}
-					alt="Voorbeeld van de gekozen afbeelding"
+					alt="Preview"
 					onerror={() => (externalFailed = !value.startsWith('data:'))}
 				/>
 				{#if externalFailed}
 					<div class="picker__preview-fallback" role="status">
-						De externe afbeelding kon niet worden geladen. De timer werkt gewoon verder.
+						The external image could not be loaded. The timer keeps working.
 					</div>
 				{/if}
 			</div>
 			<div class="picker__preview-meta">
 				<span class="picker__preview-kind">
-					{value.startsWith('data:') ? 'Lokaal opgeslagen afbeelding' : 'Externe URL'}
+					{value.startsWith('data:') ? 'Locally stored image' : 'External URL'}
 				</span>
 				<button type="button" class="btn btn--small btn--ghost" onclick={removeImage}>
-					Verwijderen
+					Remove
 				</button>
 			</div>
 		</div>

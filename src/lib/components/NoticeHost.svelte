@@ -4,14 +4,14 @@
 	/** Kortstondige status- en foutmeldingen, onderin het scherm. */
 </script>
 
-<div class="notices" aria-live="polite" aria-label="Meldingen">
+<div class="notices" aria-live="polite" aria-label="Notifications">
 	{#each notify.list as notice (notice.id)}
 		<div class="notice notice--{notice.kind}" role="status">
 			<p class="notice__message">{notice.message}</p>
 			<button
 				type="button"
 				class="notice__close"
-				aria-label="Melding sluiten"
+				aria-label="Dismiss notification"
 				onclick={() => notify.dismiss(notice.id)}
 			>
 				<svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">

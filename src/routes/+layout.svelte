@@ -30,7 +30,7 @@
 	<link rel="manifest" href="./manifest.webmanifest" />
 	<meta
 		name="description"
-		content="MultiUseTimer — lokale countdown- en count-up-timers voor belangrijke momenten."
+		content="MultiUseTimer — local countdown and count-up timers for the moments that matter."
 	/>
 </svelte:head>
 
